@@ -46,11 +46,11 @@ export default {
         return {
             classList: require("../scraping/data.json"),
 
-            teacherList: require("../scraping/teachers.json"),
-            teachers: require("../scraping/teachers.json"),
+            teacherList: require("../scraping/teachers.json"), // Lista över alla lärare
+            teachers: require("../scraping/teachers.json"),    // Lista över vilka lärare som visas
 
-            courseList: require("../scraping/courses.json"),
-            courses: require("../scraping/courses.json"),
+            courseList: require("../scraping/courses.json"),   // Lista över alla ämnen
+            courses: require("../scraping/courses.json"),      // Lista över vilka ämnen som visas
 
             properties: ["weekDay", "day", "month", "startTime", "endTime", "course", "info", "teachers", "special", "comment"],
             onlyTests: false,
@@ -91,18 +91,25 @@ export default {
 
     methods: {
         flipTeacher(teacher) {
+            // om läraren visas gör vi att den inte visas, om den inte visas gör vi att den visas
             console.log(teacher);
             if (this.teachers.includes(teacher)) this.teachers = this.teachers.filter(t => t !== teacher)
             else this.teachers.push(teacher)
         },
         flipCourse(course) {
+            // om ämnet visas gör vi att det inte visas, om den inte visas gör vi att det visas
             console.log(course);
             if (this.courses.includes(course)) this.courses = this.courses.filter(t => t !== course)
             else this.courses.push(course)
         },
         empty(className, fill) {
+            // className är antingeng teacherCheckbox eller courseCheckbox
+            // fill är antingen true eller false, om fill är true gör vi att alla visas
+            // annars gör vi att ingen visas
+
+            // hämta alla checkboxes med klass className
             let boxes = document.getElementsByClassName(className);
-            for (let box of boxes) if (box.checked !== fill) {
+            for (let box of boxes) if (box.checked !== fill) { // om box.checked !== fill klickar vi på den
                 console.log(box.checked);
                 box.click();
             }
