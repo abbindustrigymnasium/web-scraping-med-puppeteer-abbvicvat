@@ -2,18 +2,6 @@
 puppeteer = require("puppeteer");
 fs = require("fs");
 
-const attributeOrder = ["weekDay", "day", "month", "course", "info", "teachers", "activity", "special", "comment"];
-const classObj = {
-    weekDay: "",
-    day: "",
-    month: "",
-    course: "",
-    info: "",
-    teachers: [],
-    activity: "",
-    special: "",
-    comment: "",
-};
 
 
 const getClasses = async () => {
@@ -39,6 +27,7 @@ const getClasses = async () => {
 	quotes = [];
     // Get page data
     const classList = await page.evaluate(() => {
+        // Skapa en lista med attributen och ett objekt för lektioner
         const attributes = ["weekDay", "course", "info", "teachers", "activity", "special", "comment", "day", "month", "startTime", "endTime"]
         const classObj = {
             id: 0,
@@ -55,71 +44,70 @@ const getClasses = async () => {
             comment: "",
         }
 
-        // Fetch the first element with class "quote"
-        // Get the displayed text and returns it
+        // Hämta alla element som har klass weekDay
         const dayList = document.querySelectorAll(".weekDay");
 
-        // Convert the dayList to an iterable array
-        // For each day fetch the text and author
         let classList = [];
-        let bla = [];
+        // Gå igenom alla dagar
         for (dayDiv of dayList) {
             let date = dayDiv.querySelector(".daytext").innerText;
-            // The whitespaces have the char code 160 instead of 32
-            // so I replace those whitespaces with normal ones
+            // vissa whitespaces hade char code 160 istället för 32 av nån anledning
+            // byt ut dom mot vanglia whitespaces
             date = date.replace(String.fromCharCode(160), ' ');
             
-            // date is of the format (weekDay day/month), split on whitespace and backslash
+            // date har formatet (weekDay day/month), splitta på whitespace och /
             date = date.split(/[ \/]/);
             
             let weekDay = date[0];
             let day = date[1];
             let month = date[2];
 
+            // Hämta elementen i dayDiv som har klasserna .bookingDiv.fgDiv.clickable2
+            // de är dagens lektioner
             classDivs = dayDiv.querySelectorAll(".bookingDiv.fgDiv.clickable2");
             for (classDiv of classDivs) {
+                // classInfo blir ett objekt som ser likadant ut som classObj
+                // i classInfo sparar vi all data om lektionen
                 let classInfo = {
                     ...classObj
                 };
+
+                // alla lektioner ska ha ett unikt id
 
                 classInfo["id"] = classList.length;
 
                 classInfo["weekDay"] = weekDay;
                 classInfo["day"] = day;
                 classInfo["month"] = month;
+
+                // classDiv har ett attribut title där tiderna för lektioner finns
+                // tiderna är på formatet hh:mm
+                // gå igenom strängen och leta efter : för att hitta tidern
                 let title = classDiv.title, times = [];
                 for(let i = 0; i < title.length; i++) if(title[i] == ':') times.push(title.substring(i - 2, i + 3));
                 classInfo["startTime"] = times[0];
                 classInfo["endTime"] = times[1];
 
+                // attributen i attributes med index mellan 1 och 6 hämta jag här
+                // alla dom finns i element i classDiv som har klassen .c men den på index 1 har också klassen .col1, index 2 har .col2 osv
+                // därför är ordningen på attributen i attributes viktig
                 for (let i = 1; i <= 6; i++) {
                     try {
+                        // hämta info om attributes[i]
                         classInfo[attributes[i]] = classDiv.querySelector(".c.col" + i).innerText.replace(String.fromCharCode(160), ' ');
+                        // om det är attributet är teachers gör man om det till en lista av lärare
                         if (attributes[i] === "teachers")  classInfo[attributes[i]] = classInfo[attributes[i]].split(' \n')
                     } catch (error) {
                         
                     }
                 }
-
+                // lägg till lektionen till listan av lektioner
                 classList.push(classInfo);
             }
         }
 
         return classList;
-
-        return Array.from(dayList).map((day) => {
-            // Fetch the sub-elements from the previously fetched quote element
-            // Get the displayed text and return it (`.innerText`)
-            const text = quote.querySelector(".text").innerText;
-            const author = quote.querySelector(".author").innerText;
-
-            return { text, author };
-        });
     });
-
-    // console.log("length")
-    // console.log(classList.length)
-    // console.log(classList)
 
     let jsonData = JSON.stringify(classList);
     JSON.parse(jsonData)
@@ -148,7 +136,7 @@ const getClasses = async () => {
     let courses = [];
     for (item of classList) {
         let course = item["course"];
-        // det var nån kurs som hade längd 0
+        // det var nån kurs som hade längd 0, den tar vi bort
         if (course.length !== 0 && !courses.includes(course))
             courses.push(course);
     }
