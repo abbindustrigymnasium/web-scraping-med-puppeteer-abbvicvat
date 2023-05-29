@@ -1,0 +1,71 @@
+@import 'tailwindcss/base';
+
+@import 'tailwindcss/components';
+
+/* purgecss end ignore */
+
+@import 'tailwindcss/utilities';
+
+@font-face {
+    font-family: "Tajawal";
+    font-weight: 700;
+    src: url(/fonts/Tajawal/Tajawal-Regular.ttf) format('truetype');
+}
+
+
+p {
+    display: block;
+    margin-left: 0;
+    margin-right: 0;
+}
+
+h1 {
+    display: block;
+    font-size: 1.5em;
+    margin-top: 0.67em;
+    margin-bottom: 0.67em;
+    margin-left: 0;
+    margin-right: 0;
+    font-weight: bold;
+}
+
+h2 {
+    display: block;
+    font-size: 1.5em;
+    margin-top: 0.83em;
+    margin-bottom: 0.83em;
+    margin-left: 0;
+    margin-right: 0;
+    font-weight: bold;
+}
+
+h3 {
+    display: block;
+    font-size: 1.17em;
+    margin-top: 1em;
+    margin-bottom: 1em;
+    margin-left: 0;
+    margin-right: 0;
+    font-weight: bold;
+}
+
+ul {
+    list-style-type: disc;
+}
+
+ol {
+    list-style-type: decimal;
+}
+
+body {
+    background: #F2F2F2;
+    font-family: Tajawal-Light;
+}
+
+.hoverLink:hover {
+    color: #0369CE;
+}
+
+.hoverLink2:hover {
+    background-color: #222222;
+}
