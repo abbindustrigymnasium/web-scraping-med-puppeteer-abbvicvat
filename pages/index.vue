@@ -1,6 +1,6 @@
 <template>
 	<div id="body" class="pt-5">
-        <div id="checkboxes" class="flex flex-row justify-around">
+        <div id="checkboxes" class="flex flex-row justify-around items-center">
             <div id="teacherList" class="flex flex-col justify-between">
                 <button class="bg-gray rounded-xl" @click="empty('teacherCheckbox', false)"> Töm </button>
                 <div class="flex flex-row" v-for="teacher in teacherList">
@@ -49,8 +49,8 @@ export default {
             teacherList: require("../scraping/teachers.json"), // Lista över alla lärare
             teachers: require("../scraping/teachers.json"),    // Lista över vilka lärare som visas
 
-            courseList: require("../scraping/courses.json"),   // Lista över alla ämnen
-            courses: require("../scraping/courses.json"),      // Lista över vilka ämnen som visas
+            courseList: require("../scraping/courses.json"),   // Lista över alla kurser
+            courses: require("../scraping/courses.json"),      // Lista över vilka kurser som visas
 
             properties: ["weekDay", "day", "month", "startTime", "endTime", "course", "info", "teachers", "special", "comment"],
             onlyTests: false,
@@ -73,6 +73,7 @@ export default {
 
                 // om ret inte redan är false kollar vi på kurserna
                 if (ret) {
+                    // om kursen inte finns i courses sätter vi ret till false
                     let course = item["course"];
                     if (!this.courses.includes(course)) ret = false;
                 }
@@ -97,7 +98,7 @@ export default {
             else this.teachers.push(teacher)
         },
         flipCourse(course) {
-            // om ämnet visas gör vi att det inte visas, om den inte visas gör vi att det visas
+            // om kursen visas gör vi att det inte visas, om den inte visas gör vi att det visas
             console.log(course);
             if (this.courses.includes(course)) this.courses = this.courses.filter(t => t !== course)
             else this.courses.push(course)

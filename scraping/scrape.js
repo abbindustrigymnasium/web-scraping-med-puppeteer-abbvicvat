@@ -88,7 +88,7 @@ const getClasses = async () => {
                 classInfo["startTime"] = times[0];
                 classInfo["endTime"] = times[1];
 
-                // attributen i attributes med index mellan 1 och 6 hämta jag här
+                // attributen i attributes med index mellan 1 och 6 hämtar jag här
                 // alla dom finns i element i classDiv som har klassen .c men den på index 1 har också klassen .col1, index 2 har .col2 osv
                 // därför är ordningen på attributen i attributes viktig
                 for (let i = 1; i <= 6; i++) {
