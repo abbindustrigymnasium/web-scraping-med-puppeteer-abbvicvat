@@ -1,8 +1,16 @@
-# Blog
+# Timeedit 0.5
 
-## Inspiration
+## Skrapa
 
-https://www.behance.net/gallery/131905367/Dark-mode-Blog?tracking_source=search_projects%7Cblog%20design%20web  
+För att skrapa datan går du in i mappen `scraping` och kör:
+
+```bash
+# Skrapa datan
+$ node scrape.js
+
+# Tar data som skrapades och gör rent den
+$ node clean.js
+```
 
 ## Build Setup
 
